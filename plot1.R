@@ -17,22 +17,26 @@ powerData <- read.table(powerFile, header = TRUE, sep = ";",
                         stringsAsFactors = FALSE)
 
 # Combine date and time and format as POSIX using lubridate
-powerData$DateTime <- dmy_hms(paste(powerData$Date,
-                                    powerData$Time, sep = " "))
+powerData$DateTime <- dmy_hms(paste(as.character(powerData$Date),
+                                    as.character(powerData$Time), sep = " "))
+
+# Convert Date from character to POSIX Date
+powerData$Date <- dmy(powerData$Date)
 
 # Filter to 2007-02-01 and 2007-02-02
-selectPower <- filter(powerData, powerData$DateTime >= "2007-02-01",
-                      powerData$DateTime <= "2007-02-02")
+selectPower <- rbind(filter(powerData, Date == ymd("2007-02-01")),
+                     filter(powerData, Date == ymd("2007-02-02")))
 
 # Save plot as png - 480x480 pixels
-png(filename = paste(getwd(), plot1.png, sep = "/"),
+png(filename = paste(getwd(), "plot1.png", sep = "/"),
     bg = "white", width = 480, height = 480, units = "px")
 
 # Plot histogram
 hist(selectPower$GlobalActivePower, col = "Red",
      main = "Global Active Power",
      xlab = "Global Active Power (kilowatts)",
-     ylab = "Frequency")
+     ylab = "Frequency",
+     ylim = c(0, 1200), xlim = c(0,6))
 dev.off()
 
 
