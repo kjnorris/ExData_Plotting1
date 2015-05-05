@@ -1,5 +1,10 @@
+# Coursera - JHU Exploratory Data Analysis
+# Author: Kenneth Norris
+# Date: 5 May 2015
+
+# Project 1 - Plot 1
+
 # Load libraries used in the script
-library(dplyr)
 library(lubridate)
 
 # Specify file from Data directory
@@ -7,7 +12,7 @@ powerFile <- paste(getwd(), "Data",
                    "household_power_consumption.txt", sep = "/")
 
 # Set column headings for the data frame
-powerCols <- c("Date", "Time", "GlobalActivePower", "GlobalReactovePower",
+powerCols <- c("Date", "Time", "GlobalActivePower", "GlobalReactivePower",
                "Voltage", "GlobalIntensity", "SubMetering1",
                "SubMetering2", "SubMetering3")
 
@@ -24,14 +29,16 @@ powerData$DateTime <- dmy_hms(paste(as.character(powerData$Date),
 powerData$Date <- dmy(powerData$Date)
 
 # Filter to 2007-02-01 and 2007-02-02
-selectPower <- rbind(filter(powerData, Date == ymd("2007-02-01")),
-                     filter(powerData, Date == ymd("2007-02-02")))
+selectPower <- subset(powerData,
+                    Date == ymd("2007-02-01") |
+                        Date == ymd("2007-02-02"))
+
 
 # Save plot as png - 480x480 pixels
 png(filename = paste(getwd(), "plot1.png", sep = "/"),
-    bg = "white", width = 480, height = 480, units = "px")
+    bg = "transparent", width = 480, height = 480, units = "px")
 
-# Plot histogram
+# Plot histogram - Global Active Power
 hist(selectPower$GlobalActivePower, col = "Red",
      main = "Global Active Power",
      xlab = "Global Active Power (kilowatts)",

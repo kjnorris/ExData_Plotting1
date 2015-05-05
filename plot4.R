@@ -2,7 +2,7 @@
 # Author: Kenneth Norris
 # Date: 5 May 2015
 
-# Project 1 - Plot 2
+# Project 1 - Plot 4
 
 # Load libraries used in the script
 library(lubridate)
@@ -34,12 +34,42 @@ selectPower <- subset(powerData,
                           Date == ymd("2007-02-02"))
 
 # Save plot as png - 480x480 pixels
-png(filename = paste(getwd(), "plot2.png", sep = "/"),
+png(filename = paste(getwd(), "plot4.png", sep = "/"),
     bg = "transparent", width = 480, height = 480, units = "px")
 
-# Plot line graph - Global Active Power by Date/Time
+# Set global graphics parameters
+par(mfcol = c(2, 2))
+
+# Upper left line graph - Global Active Power by Date/Time
 plot(GlobalActivePower ~ DateTime, selectPower,
      type = "l",
      xlab = " ",
-     ylab = "Global Active Power (kilowatts)")
+     ylab = "Global Active Power")
+
+# Lower left line graph - 3 Submetering reads by Date/Time
+plot(SubMetering1 ~ DateTime, selectPower,
+     type = "l", col = "black",
+     xlab = " ",
+     ylab = "Energy sub metering")
+lines(SubMetering2 ~ DateTime, selectPower,
+      type = "l", col = "red")
+lines(SubMetering3 ~ DateTime, selectPower,
+      type = "l", col = "blue")
+legend("topright",
+       col = c("black", "red", "blue"),
+       lty = c(1, 1, 1), bty = "n",
+       legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
+
+# Upper right line graph - Voltage by Date/Time
+plot(Voltage ~ DateTime, selectPower,
+     type = "l",
+     xlab = "datetime",
+     ylab = "Voltage")
+
+# Lower right line graph - Global Reactive Power by Date/Time
+plot(GlobalReactivePower ~ DateTime, selectPower,
+     type = "l",
+     xlab = "datetime",
+     ylab = "Global_reactive_power")
+
 dev.off()

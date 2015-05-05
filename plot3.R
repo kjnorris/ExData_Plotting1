@@ -2,7 +2,7 @@
 # Author: Kenneth Norris
 # Date: 5 May 2015
 
-# Project 1 - Plot 2
+# Project 1 - Plot 3
 
 # Load libraries used in the script
 library(lubridate)
@@ -34,12 +34,20 @@ selectPower <- subset(powerData,
                           Date == ymd("2007-02-02"))
 
 # Save plot as png - 480x480 pixels
-png(filename = paste(getwd(), "plot2.png", sep = "/"),
+png(filename = paste(getwd(), "plot3.png", sep = "/"),
     bg = "transparent", width = 480, height = 480, units = "px")
 
-# Plot line graph - Global Active Power by Date/Time
-plot(GlobalActivePower ~ DateTime, selectPower,
-     type = "l",
+# Plot line graph - 3 Submetering reads by Date/Time
+plot(SubMetering1 ~ DateTime, selectPower,
+     type = "l", col = "black",
      xlab = " ",
-     ylab = "Global Active Power (kilowatts)")
+     ylab = "Energy sub metering")
+lines(SubMetering2 ~ DateTime, selectPower,
+      type = "l", col = "red")
+lines(SubMetering3 ~ DateTime, selectPower,
+      type = "l", col = "blue")
+legend("topright",
+       col = c("black", "red", "blue"),
+       lty = c(1, 1, 1),
+       legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
 dev.off()
